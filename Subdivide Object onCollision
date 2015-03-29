@@ -1,0 +1,51 @@
+using UnityEngine;
+using System.Collections;
+
+public class Subdivide : MonoBehaviour
+{
+	public float mass;		//mass of every cube in subdivided mesh
+	public float lod;		//level of detail -> how many cubes we create
+	
+	void OnCollisionEnter (Collision collision)
+	{
+		//current position
+		float x = this.transform.position.x;
+		float y = 0;								//start is always at the bottom
+		float z = this.transform.position.z;
+
+		//getting size of original mesh
+		float GameObject_Width = this.renderer.bounds.size.x;
+		float GameObject_Height = this.renderer.bounds.size.y;
+		float GameObject_length = this.renderer.bounds.size.z;
+
+		float offset = GameObject_Width / 2;		//subdivided mesh should be in exact place of original mesh
+
+		int rowX = (int)(GameObject_Width / lod);
+		int rowY = (int)(GameObject_Height / lod);
+		int rowZ = (int)(GameObject_length / lod);
+
+		//Collision detection
+		if (collision.gameObject.tag == "sphere") {
+			Destroy (gameObject);
+			GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+			cube.AddComponent ("Rigidbody");
+			Rigidbody rb = cube.GetComponent<Rigidbody> ();
+			rb.mass = mass;
+			cube.transform.localScale = new Vector3 (lod, lod, lod);
+			Destroy (cube);							//createPrimitive creates always one cube in the middle -> Destroy it.
+
+			//Creation of cubes for subdivided mesh
+			for (int k=0; k<rowY; k++) {
+				for (int j=0; j<rowZ; j++) {
+					for (int i=0; i<rowX; i++) {
+						Instantiate (cube, new Vector3 (x - offset + (i * lod), y, z), this.transform.rotation);
+					}
+					z += lod;
+				}
+				x=this.transform.position.x;
+				z = this.transform.position.z;
+				y += lod+0.01f;					//little offset, can't expolain why needed, but otherwise it would implode becuase there is not enough space in y-direction
+			}
+		}
+	}
+}
