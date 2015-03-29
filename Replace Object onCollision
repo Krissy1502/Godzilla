@@ -7,7 +7,7 @@ public class Fraction : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision collision) {
 
-		print(collision.contacts[0]);
+		//print(collision.contacts[0]);
 
 		if (collision.gameObject.tag == "sphere") {
 			Destroy(gameObject);
