@@ -1,0 +1,23 @@
+public class ShootingScript : MonoBehaviour {
+
+	public Transform spawnTransform;
+	public GameObject projectile;
+	public float force;
+	public float shootingSpeed = 3;
+
+	private float nextTime = 0;
+
+	// Update is called once per frame
+	void Update () {
+		nextTime = nextTime + Time.deltaTime;
+		if (Input.GetButton("Fire1") && (nextTime > 1.0f / shootingSpeed))  {
+			GameObject rb;
+			rb = Instantiate(projectile,spawnTransform.position,spawnTransform.rotation) as GameObject;
+
+			rb.rigidbody.AddForce(rb.transform.forward * force);
+			Destroy(rb,5);
+			nextTime = 0;
+		}
+	}
+
+}
