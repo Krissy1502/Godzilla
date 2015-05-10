@@ -1,0 +1,28 @@
+using UnityEngine;
+using System.Collections;
+
+public class preFractureShardArray : MonoBehaviour
+{
+	//public GameObject fracturedObj;
+	//public GameObject originalObj;
+	public GameObject[] shards;						//here you put in each prefractured shard of the mesh
+	
+	void OnTriggerEnter (Collider other)
+	{
+		//Collision detection
+		if (other.gameObject.tag == "sphere") {		//in my case the plane has the tag "sphere"
+
+			//Destroy(originalObj);
+			foreach(GameObject shard in shards) {
+				//shard.AddComponent<Rigidbody>();
+				shard.rigidbody.useGravity=true;
+			}
+			//Instantiate (fracturedObj, new Vector3(transform.position.x, transform.position.y-8.4f, transform.position.z+4), Quaternion.identity);
+
+
+		
+	}
+	
+	
+}
+}
