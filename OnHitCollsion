@@ -1,0 +1,22 @@
+
+[System.Serializable]
+public class Particle{
+	public float deathTime = 1f;
+	public GameObject particleObject;
+}
+
+public class OnHitCollision : MonoBehaviour {
+		
+	public Particle particle;
+	public AudioClip hitSound = null;
+
+	void OnCollisionEnter(Collision collision) {
+		ContactPoint point = collision.contacts [0];
+
+		GameObject p = Instantiate (particle.particleObject, point.point, Quaternion.identity) as GameObject;
+
+		AudioSource.PlayClipAtPoint(hitSound,point.point);
+
+		Destroy (p, 1);
+	}
+}
