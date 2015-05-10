@@ -1,0 +1,11 @@
+public class ParticleCollsion : MonoBehaviour {
+
+	public float deathTime = 1f;
+	public GameObject particle;
+
+	void OnCollisionEnter(Collision collision) {
+		ContactPoint point = collision.contacts [0];
+		GameObject p = Instantiate (particle, point.point, Quaternion.identity) as GameObject;
+		Destroy (p, deathTime);
+	}
+}
